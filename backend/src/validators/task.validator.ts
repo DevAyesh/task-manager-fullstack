@@ -10,18 +10,21 @@ function isTodayOrLater(value: string) {
   return date >= today;
 }
 
-export const createTaskSchema = z.object({
+const baseTaskSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
   description: z.string().trim().optional(),
   priority: priorityEnum,
   status: statusEnum.optional().default('PENDING'),
   dueDate: z
     .string()
-    .refine((val) => !isNaN(Date.parse(val)), 'Due date must be a valid date')
-    .refine(isTodayOrLater, 'Due date cannot be earlier than today'),
+    .refine((val) => !isNaN(Date.parse(val)), 'Due date must be a valid date'),
 });
 
-export const updateTaskSchema = createTaskSchema.partial();
+export const createTaskSchema = baseTaskSchema.extend({
+  dueDate: baseTaskSchema.shape.dueDate.refine(isTodayOrLater, 'Due date cannot be earlier than today'),
+});
+
+export const updateTaskSchema = baseTaskSchema.partial();
 
 export const taskQuerySchema = z.object({
   search: z.string().trim().optional(),

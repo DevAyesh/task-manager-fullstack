@@ -51,7 +51,8 @@ export default function TaskFormModal({ open, initialTask, onClose, onSubmit }: 
       setError('Title is required');
       return;
     }
-    if (dueDate < today()) {
+    const isNewOrDateChanged = !initialTask || dueDate !== initialTask.dueDate.split('T')[0];
+    if (isNewOrDateChanged && dueDate < today()) {
       setError('Due date cannot be earlier than today');
       return;
     }
@@ -132,7 +133,7 @@ export default function TaskFormModal({ open, initialTask, onClose, onSubmit }: 
             <label className="mb-1 block text-sm font-medium">Due date</label>
             <input
               type="date"
-              min={today()}
+              min={initialTask ? undefined : today()}
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"

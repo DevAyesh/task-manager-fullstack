@@ -52,7 +52,21 @@ export async function createTask(userId: string, input: CreateTaskInput) {
 }
 
 export async function updateTask(userId: string, taskId: string, input: UpdateTaskInput) {
-  await getTaskById(userId, taskId); // throws 404 if missing or not owned by this user
+  const task = await getTaskById(userId, taskId); // throws 404 if missing or not owned by this user
+
+  if (input.dueDate) {
+    const newDate = new Date(input.dueDate);
+    newDate.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const currentDueDate = new Date(task.dueDate);
+    currentDueDate.setHours(0, 0, 0, 0);
+
+    // Only throw if they are changing the date to something different AND it's in the past
+    if (newDate.getTime() !== currentDueDate.getTime() && newDate < today) {
+      throw new AppError('Due date cannot be earlier than today', 400);
+    }
+  }
 
   return prisma.task.update({
     where: { id: taskId },
