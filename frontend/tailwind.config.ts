@@ -1,15 +1,15 @@
 # Task Management System
 
-A full-stack Task Management System built for the Koncepthive Full Stack Web
-Developer Intern technical assessment. Users log in with a fixed admin
-account and manage tasks (create, view, update, delete) with search,
+A full - stack Task Management System built for the Koncepthive Full Stack Web
+Developer Intern technical assessment.Users log in with a fixed admin
+account and manage tasks(create, view, update, delete) with search,
 filtering, sorting, and a dashboard summary.
 
 ## Project Overview
 
 The app has two parts, developed and deployed independently:
 
-- **frontend/** — Next.js (App Router) + TypeScript UI: login, dashboard,
+- ** frontend/** — Next.js (App Router) + TypeScript UI: login, dashboard,
   and task management screens.
 - **backend/** — Express + TypeScript REST API: authentication and task
   CRUD, backed by PostgreSQL via Prisma.
